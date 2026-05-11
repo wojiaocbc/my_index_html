@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>辰辰的导航页</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;900&display=swap');
+
+		/* 基础重置 */
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		html, body { height: 100%; overflow: hidden; }
+
+		body {
+			font-family: 'Source Sans Pro', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+			color: #fff;
+			background: #1a365d;
+		}
+
+		/* 背景图片 - 从右向左水平滚动，底部对齐 */
+		#bj {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 200%;
+			height: 100%;
+			background-image: url('css/images/bj.jpg');
+			background-position: left bottom;
+			background-repeat: repeat-x;
+			background-size: auto 100%;
+			animation: scrollRightToLeft 35s linear infinite;
+		}
+
+		/* 从右向左无缝滚动动画 */
+		@keyframes scrollRightToLeft {
+			0% {
+				transform: translateX(0);
+			}
+			100% {
+				transform: translateX(-50%);
+			}
+		}
+
+		/* 半透明遮罩层 - 提高文字可读性 */
+		#overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(135deg,
+				rgba(26, 54, 93, 0.75) 0%,
+				rgba(0, 0, 0, 0.65) 50%,
+				rgba(26, 54, 93, 0.75) 100%);
+			backdrop-filter: blur(2px);
+		}
+
+		/* 主内容区域 */
+		#main {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			z-index: 10;
+		}
+
+		/* 标题样式 - 增强视觉效果 */
+		#header h1 {
+			font-size: 5em;
+			font-weight: 900;
+			letter-spacing: -0.035em;
+			margin-bottom: 0.3em;
+			animation: fadeInUp 1s 0.5s forwards;
+			opacity: 0;
+			text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5),
+						 0 0 40px rgba(255, 255, 255, 0.1);
+			background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+
+		/* 副标题样式 */
+		#header p {
+			font-size: 1.4em;
+			font-weight: 300;
+			letter-spacing: 0.1em;
+			margin-bottom: 2.5em;
+			animation: fadeInUp 1s 0.7s forwards;
+			opacity: 0;
+			text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+			color: rgba(255, 255, 255, 0.95);
+		}
+
+		/* 淡入向上动画 */
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* 导航列表 */
+		#header nav ul {
+			list-style: none;
+			display: flex;
+			gap: 20px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		/* 导航项动画 */
+		#header nav li {
+			animation: fadeInUp 0.6s ease-out forwards;
+			opacity: 0;
+		}
+		#header nav li:nth-child(1) { animation-delay: 1s; }
+		#header nav li:nth-child(2) { animation-delay: 1.15s; }
+		#header nav li:nth-child(3) { animation-delay: 1.3s; }
+		#header nav li:nth-child(4) { animation-delay: 1.45s; }
+
+		/* 导航按钮样式 - 现代玻璃态效果 */
+		/* 修改说明：将选择器从 a 改为 span，移除超链接功能但保留所有视觉效果 */
+		#header nav span {
+			display: inline-block;
+			padding: 16px 35px;
+			background: rgba(255, 255, 255, 0.12);
+			border: 2px solid rgba(255, 255, 255, 0.25);
+			border-radius: 12px;
+			color: #fff;
+			text-decoration: none;
+			font-size: 1.05em;
+			font-weight: 500;
+			letter-spacing: 0.05em;
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			backdrop-filter: blur(10px);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			position: relative;
+			overflow: hidden;
+			cursor: default; /* 修改鼠标样式，表示不可点击 */
+		}
+
+		/* 按钮悬停效果 */
+		#header nav span:hover {
+			background: rgba(255, 255, 255, 0.25);
+			border-color: rgba(255, 255, 255, 0.5);
+			transform: translateY(-3px);
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3),
+						0 0 20px rgba(255, 255, 255, 0.1);
+		}
+
+		/* 按钮点击效果 */
+		#header nav span:active {
+			transform: translateY(-1px);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		}
+
+		/* 页脚样式 */
+		#footer {
+			position: fixed;
+			bottom: 25px;
+			left: 0;
+			right: 0;
+			text-align: center;
+			font-size: 0.85em;
+			opacity: 0.8;
+			z-index: 10;
+			animation: fadeIn 1s 2s forwards;
+			opacity: 0;
+		}
+
+		@keyframes fadeIn {
+			to { opacity: 0.8; }
+		}
+
+		#footer a {
+			color: #fff;
+			text-decoration: none;
+			transition: color 0.3s ease;
+		}
+
+		#footer a:hover {
+			color: #e0e7ff;
+			text-decoration: underline;
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 768px) {
+			#header h1 {
+				font-size: 3em;
+			}
+
+			#header p {
+				font-size: 1.1em;
+				margin-bottom: 2em;
+			}
+
+			#header nav ul {
+				gap: 12px;
+			}
+
+			#header nav span {
+				padding: 12px 24px;
+				font-size: 0.95em;
+			}
+		}
+
+		@media (max-width: 480px) {
+			#header h1 {
+				font-size: 2.2em;
+			}
+
+			#header p {
+				font-size: 1em;
+			}
+
+			#header nav ul {
+				flex-direction: column;
+				gap: 10px;
+			}
+
+			#header nav span {
+				width: 200px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div id="bj"></div>
+	<div id="overlay"></div>
+	<div id="main">
+		<header id="header">
+			<h1>辰辰</h1>
+			<p>数据驱动未来</p>
+			<nav>
+				<ul>
+					<!-- 修改说明：将 a 标签替换为 span 标签，移除超链接功能，保留所有样式和文本 -->
+					<li><span title="查看我的个人简历">个人简历</span></li>
+					<li><span title="精选作品">精选作品</span></li>
+					<li><span title="核心技能">核心技能</span></li>
+					<li><span title="最新博客">最新博客</span></li>
+				</ul>
+			</nav>
+		</header>
+	</div>
+</body>
+</html>
